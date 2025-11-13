@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funny Love Confession 💘</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+      transition: all 0.3s ease;
+      max-width: 90%;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+    }
+
+    .heart {
+      font-size: 3rem;
+      animation: heartbeat 1.2s infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+      position: relative;
+    }
+
+    button {
+      border: none;
+      padding: 15px 35px;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .yes {
+      background-color: #4CAF50;
+      color: white;
+      position: relative;
+    }
+
+    .no {
+      background-color: #e91e63;
+      color: white;
+      position: absolute;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 15px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="main-container">
+    <h1>Hey You! 💞</h1>
+    <div class="heart">❤️</div>
+    <p id="question">Do you like me? 🥺👉👈</p>
+    <div class="buttons" id="button-container">
+      <button class="yes" id="yes-btn">Yes 😍</button>
+      <button class="no" id="no-btn">No 😜</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="love-container">
+    <h1>YAAAY! 💖</h1>
+    <div class="heart">💞</div>
+    <p>Hehe, I knew it! You’re officially my favorite person now 😘</p>
+  </div>
+
+  <footer>Made with 💖 and way too much love 😅</footer>
+
+  <script>
+    const noBtn = document.getElementById('no-btn');
+    const yesBtn = document.getElementById('yes-btn');
+    const question = document.getElementById('question');
+    const mainContainer = document.getElementById('main-container');
+    const loveContainer = document.getElementById('love-container');
+    const buttonContainer = document.getElementById('button-container');
+
+    const funnyQuestions = [
+      "Wait... are you sure? 😳",
+      "Think again... You Will Miss ME 😜",
+      "Final chance! You’ll regret it 😤",
+      "You can’t say no anymore! 💘"
+    ];
+
+    let clickCount = 0;
+    let movingInterval = null;
+
+    // Position No button initially so it doesn’t overlap
+    function resetNoButtonPosition() {
+      noBtn.style.left = "60%";
+      noBtn.style.top = "0";
+    }
+    resetNoButtonPosition();
+
+    function moveButtonRandomly() {
+      const btnWidth = noBtn.offsetWidth;
+      const btnHeight = noBtn.offsetHeight;
+
+      const maxX = window.innerWidth - btnWidth - 20;
+      const maxY = window.innerHeight - btnHeight - 20;
+
+      let x = Math.random() * maxX;
+      let y = Math.random() * maxY;
+
+      // Avoid overlapping with Yes button area (center)
+      const yesRect = yesBtn.getBoundingClientRect();
+      const buffer = 80;
+
+      while (
+        x > yesRect.left - buffer &&
+        x < yesRect.right + buffer &&
+        y > yesRect.top - buffer &&
+        y < yesRect.bottom + buffer
+      ) {
+        x = Math.random() * maxX;
+        y = Math.random() * maxY;
+      }
+
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    }
+
+    noBtn.addEventListener('click', () => {
+      if (clickCount < 3) {
+        question.innerText = funnyQuestions[clickCount];
+        moveButtonRandomly();
+        clickCount++;
+
+        // Start infinite moving after last question
+        if (clickCount === 3) {
+          question.innerText = funnyQuestions[3];
+          movingInterval = setInterval(moveButtonRandomly, 700);
+        }
+      }
+    });
+
+    yesBtn.addEventListener('click', () => {
+      mainContainer.classList.add('hidden');
+      loveContainer.classList.remove('hidden');
+      clearInterval(movingInterval);
+    });
+  </script>
+
+</body>
+</html>
